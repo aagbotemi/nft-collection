@@ -91,11 +91,24 @@ function App() {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
 
       console.log("Connected", accounts[0]);
-      setCurrentAccount(accounts[0]);; 
+      setCurrentAccount(accounts[0]);
+
+      toast.dismiss();
+      toast.success("Connected Successfully", {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
 
       setupEventListener();
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+      toast.dismiss();
+      toast.error(error.message, {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
     }
   }
 
@@ -159,12 +172,12 @@ function App() {
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
         setLoading(false);
 
-        toast.dismiss();
-        toast.error(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`, {
-          position: "top-right",
-          pauseOnHover: true,
-          draggable: false,
-        });
+        // toast.dismiss();
+        // toast.success(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`, {
+        //   position: "top-right",
+        //   pauseOnHover: true,
+        //   draggable: false,
+        // });
       } else {
         // console.log("Ethereum object doesn't exist!");
         toast.dismiss();
@@ -246,10 +259,10 @@ function App() {
         </div>
 
         {eventAlert
-          ? show && <div className="fixed left-1/2 top-3 bg-white w-96 p-4 rounded" style={{transform: "translate(-50%, 0%)"}}>
-            <div>{ eventAlert }</div>
+          ? show && <div className="fixed left-1/2 top-2 bg-white w-96 p-4 rounded" style={{transform: "translate(-50%, 0%)"}}>
+            <div className="break-words">{ eventAlert }</div>
           
-            <button onClick={() => setShow(false)} className="bg-red-400 px-5 py-1 rounded text-white font-semibold text-right mt-2">Close</button>
+            <button onClick={() => setShow(false)} className="bg-red-400 px-5 py-1 rounded text-white font-semibold text-right mt-4">Close</button>
           </div>
           : null 
         }
