@@ -89,7 +89,29 @@ function App() {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, [])
+  }, []);
+
+  // Render Methods
+  const renderNotConnectedContainer = () => (
+    <button onClick={connectWallet} className="cta-button connect-wallet-button">
+      Connect to Wallet
+    </button>
+  );
+
+  const renderMintUI = () => {
+    return (
+      <>
+        {loading 
+          ? <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+            <div className="spinner"></div>
+          </button>
+          : <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+            Mint NFT
+          </button>
+        }
+      </>
+    )
+  }
 
   return (
     <div className="text-center">
