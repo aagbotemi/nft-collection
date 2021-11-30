@@ -4,6 +4,8 @@ import { ethers } from "ethers";
 import myEpicNft from './utils/MyEpicNFT.json';
 import twitterLogo from './assets/twitter-logo.svg';
 
+import { toast } from 'react-toastify';
+
 const TWITTER_HANDLE = 'abiodunAwoyemi';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/squarenft-mlsttagkhh';
@@ -15,27 +17,43 @@ function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [loading, setLoading] = useState(false);
 
+  toast.configure({
+    autoClose: 7000,
+    draggable: true,
+  });
+
   const checkIfWalletIsConnected = async () => {
     const { ethereum } = window;
 
     if (!ethereum) {
-        console.log("Make sure you have metamask!");
-        return;
+      // console.log("Make sure you have metamask!");
+      toast.dismiss();
+      toast.info("Make sure you have metamask!", {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
+      return;
     } else {
-        console.log("We have the ethereum object", ethereum);
+      console.log("We have the ethereum object", ethereum);
     }
 
     const accounts = await ethereum.request({ method: 'eth_accounts' });
 
     if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        setCurrentAccount(account)
-        // Setup listener! This is for the case where a user comes to our site
-        // and ALREADY had their wallet connected + authorized.
-        setupEventListener()
+      const account = accounts[0];
+      console.log("Found an authorized account:", account);
+      setCurrentAccount(account)
+      
+      setupEventListener()
     } else {
-        console.log("No authorized account found")
+      // console.log("No authorized account found")
+      toast.dismiss();
+      toast.error("No authorized account found", {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
     }
     let chainId = await ethereum.request({ method: 'eth_chainId' });
     console.log("Connected to chain " + chainId);
@@ -43,7 +61,13 @@ function App() {
     // String, hex code of the chainId of the Rinkebey test network
     const rinkebyChainId = "0x4"; 
     if (chainId !== rinkebyChainId) {
-      alert("You are not connected to the Rinkeby Test Network!");
+      // alert("You are not connected to the Rinkeby Test Network!");
+      toast.dismiss();
+      toast.error("You are not connected to the Rinkeby Test Network!", {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
     }
   }
 
@@ -52,7 +76,13 @@ function App() {
       const { ethereum } = window;
 
       if (!ethereum) {
-        alert("Get MetaMask!");
+        // alert("Get MetaMask!");
+        toast.dismiss();
+        toast.info("Get MetaMask!", {
+          position: "top-right",
+          pauseOnHover: true,
+          draggable: false,
+        });
         return;
       }
 
@@ -84,12 +114,23 @@ function App() {
         });
 
         console.log("Setup event listener!")
-
       } else {
-        console.log("Ethereum object doesn't exist!");
+        // console.log("Ethereum object doesn't exist!");
+        toast.dismiss();
+        toast.error("Ethereum object doesn't exist!", {
+          position: "top-right",
+          pauseOnHover: true,
+          draggable: false,
+        });
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+      toast.dismiss();
+      toast.error(error.message, {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
     }
   }
 
@@ -112,13 +153,31 @@ function App() {
         
         console.log(nftTxn);
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
-
         setLoading(false);
+
+        toast.dismiss();
+        toast.error(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`, {
+          position: "top-right",
+          pauseOnHover: true,
+          draggable: false,
+        });
       } else {
-        console.log("Ethereum object doesn't exist!");
+        // console.log("Ethereum object doesn't exist!");
+        toast.dismiss();
+        toast.error("Ethereum object doesn't exist!", {
+          position: "top-right",
+          pauseOnHover: true,
+          draggable: false,
+        });
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+      toast.dismiss();
+      toast.error(error.message, {
+        position: "top-right",
+        pauseOnHover: true,
+        draggable: false,
+      });
     }
   }
 
@@ -158,7 +217,7 @@ function App() {
             <br />
             I'm minting my own NFT Collection.
           </p>
-          
+
           {currentAccount === "" 
             ? renderNotConnectedContainer() 
             : renderMintUI()}
