@@ -15,7 +15,9 @@ const CONTRACT_ADDRESS = "0xCb3da68B45F65412603B243B0F4154a24D4cD452";
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
+  const [eventAlert, setEventAlert] = useState("");
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(true);
 
   toast.configure({
     autoClose: 7000,
@@ -110,7 +112,9 @@ function App() {
 
         connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
           console.log(from, tokenId.toNumber())
-          alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
+          let alert = `Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+
+          setEventAlert(alert)
         });
 
         console.log("Setup event listener!")
@@ -217,7 +221,7 @@ function App() {
             <br />
             I'm minting my own NFT Collection.
           </p>
-
+          
           {currentAccount === "" 
             ? renderNotConnectedContainer() 
             : renderMintUI()}
@@ -240,6 +244,15 @@ function App() {
             rel="noreferrer"
           >{`built  by @${TWITTER_HANDLE}`}</a>
         </div>
+
+        {eventAlert
+          ? show && <div className="fixed left-1/2 top-3 bg-white w-96 p-4 rounded" style={{transform: "translate(-50%, 0%)"}}>
+            <div>{ eventAlert }</div>
+          
+            <button onClick={() => setShow(false)} className="bg-red-400 px-5 py-1 rounded text-white font-semibold text-right mt-2">Close</button>
+          </div>
+          : null 
+        }
       </div>
     </div>
   );
