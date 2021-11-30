@@ -213,7 +213,7 @@ function App() {
 
   return (
     <div className="App h-screen text-center">
-      <div className="container h-screen flex flex-col justify-between">
+      <div className=" min-h-screen flex flex-col justify-between">
         <div className="p-10">
           <p className="header gradient-text m-0 font-bold text-5xl">My NFT Collection</p>
           <p className="text-xl text-white py-7">
