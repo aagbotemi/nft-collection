@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import './App.css';
 import { ethers } from "ethers";
 import myEpicNft from './utils/MyEpicNFT.json';
+import twitterLogo from './assets/twitter-logo.svg';
+
+const TWITTER_HANDLE = 'abiodunAwoyemi';
+const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+const OPENSEA_LINK = 'https://testnets.opensea.io/collection/squarenft-mlsttagkhh';
+const TOTAL_MINT_COUNT = 50;
 
 const CONTRACT_ADDRESS = "0xCb3da68B45F65412603B243B0F4154a24D4cD452";
 
@@ -122,7 +128,7 @@ function App() {
 
   // Render Methods
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet} className="cta-button connect-wallet-button">
+    <button onClick={connectWallet} className="px-10 w-auto border-0 rounded font-semibold text-white text-lg cursor-pointer h-12 connect-wallet-button">
       Connect to Wallet
     </button>
   );
@@ -131,10 +137,10 @@ function App() {
     return (
       <>
         {loading 
-          ? <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
-            <div className="spinner"></div>
+          ? <button className="mint-button px-10 w-auto border-0 rounded font-semibold text-white text-lg cursor-pointer h-12 connect-wallet-button">
+            <div className="spinner block w-5 h-5 rounded-full"></div>
           </button>
-          : <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+          : <button onClick={askContractToMintNft} className="px-10 w-auto border-0 rounded font-semibold text-white text-lg cursor-pointer h-12 connect-wallet-button">
             Mint NFT
           </button>
         }
@@ -143,8 +149,39 @@ function App() {
   }
 
   return (
-    <div className="text-center">
-      Hello World
+    <div className="App h-screen text-center">
+      <div className="container h-screen flex flex-col justify-between">
+        <div className="p-10">
+          <p className="header gradient-text m-0 font-bold text-5xl">My NFT Collection</p>
+          <p className="text-xl text-white py-7">
+            Each unique. Each beautiful. Discover your NFT today.
+            <br />
+            I'm minting my own NFT Collection.
+          </p>
+          
+          {currentAccount === "" 
+            ? renderNotConnectedContainer() 
+            : renderMintUI()}
+
+          <br />
+          <br />
+
+          <a href={OPENSEA_LINK} target="_blank">
+            <button className="px-10 w-auto border-0 rounded font-semibold text-white text-lg cursor-pointer h-12 connect-wallet-button">
+              Checkout the Collection
+            </button>
+          </a>
+        </div>
+        <div className="flex justify-center items-center pb-7">
+          <img alt="Twitter Logo" className="w-8 h-8" src={twitterLogo} />
+          <a
+            className="text-white font-semibold"
+            href={TWITTER_LINK}
+            target="_blank"
+            rel="noreferrer"
+          >{`built  by @${TWITTER_HANDLE}`}</a>
+        </div>
+      </div>
     </div>
   );
 }
